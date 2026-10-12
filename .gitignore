@@ -1,0 +1,5 @@
+trial
+trial_rs
+*.o
+node_modules/
+__pycache__/

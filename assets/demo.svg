@@ -15,8 +15,8 @@
   <text x="70" y="320" font-size="23" fill="#3fb950" xml:space="preserve">[PASS] global stream desyncs on an order change, as expected</text>
   <text x="70" y="380" font-size="23" fill="#f5b342" xml:space="preserve">=== per-agent effect, agents flipped by the treatment ===</text>
   <text x="70" y="412" font-size="23" fill="#c9d4df" xml:space="preserve">coupled twins (named, CRN)      <tspan fill="#3fb950">3.0</tspan> agents differ, the real effect</text>
-  <text x="70" y="444" font-size="23" fill="#c9d4df" xml:space="preserve">independent runs                <tspan fill="#9aa7b4">6.1</tspan> agents differ, mostly chance noise</text>
+  <text x="70" y="444" font-size="23" fill="#c9d4df" xml:space="preserve">independent runs                <tspan fill="#9aa7b4">5.8</tspan> agents differ, mostly chance noise</text>
   <text x="70" y="504" font-size="23" fill="#f5b342" xml:space="preserve">=== when the treatment reorders work ===</text>
   <text x="70" y="536" font-size="23" fill="#c9d4df" xml:space="preserve">named streams stay coupled      <tspan fill="#3fb950">3.0</tspan> agents differ (true effect)</text>
-  <text x="70" y="568" font-size="23" fill="#c9d4df" xml:space="preserve">global stream loses coupling    <tspan fill="#f85149">5.5</tspan> agents differ (spurious)</text>
+  <text x="70" y="568" font-size="23" fill="#c9d4df" xml:space="preserve">global stream loses coupling    <tspan fill="#f85149">5.9</tspan> agents differ (spurious)</text>
 </svg>

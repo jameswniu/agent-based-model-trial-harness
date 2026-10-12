@@ -32,7 +32,7 @@
   <text x="214" y="512" font-size="24" fill="#9aa7b4">the real effect, from coupled twins</text>
 
   <rect x="628" y="434" width="512" height="96" rx="12" fill="#17130f" stroke="#6e7681" stroke-width="2"/>
-  <text x="660" y="498" font-size="60" font-weight="800" fill="#9aa7b4">6.1</text>
+  <text x="660" y="498" font-size="60" font-weight="800" fill="#9aa7b4">5.8</text>
   <text x="784" y="480" font-size="26" fill="#e6edf3">under independent runs</text>
   <text x="784" y="512" font-size="24" fill="#9aa7b4">about half of it is chance noise</text>
 </svg>
