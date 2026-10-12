@@ -61,5 +61,17 @@ jobs:
         run: |
           diff py.out ts.out
           diff py.out rs.out
-          grep -q "= 96079823e10779ff" py.out
+          grep -qE '^CANONICAL FINGERPRINT \(seed [0-9]+, beta [0-9]+ ppm\) = [0-9a-f]{16}$' py.out
           wc -c py.out ts.out rs.out
+
+      - name: The fingerprint must also match an independently pinned value, not just agree across languages
+        run: |
+          # Agreement among all three builds alone cannot catch a bug shared by all three,
+          # for example if the same algorithm change were made identically in each file. This
+          # pins the expected value in tests/canonical_fingerprint.txt, a single checked-in
+          # fixture both builds and CI read from, so a real regression fails even if it is
+          # consistent across languages, and updating the expected seed or algorithm only
+          # means editing that one file, never this workflow.
+          want=$(cat tests/canonical_fingerprint.txt)
+          got=$(grep -oE '[0-9a-f]{16}$' py.out)
+          test "$got" = "$want" || { echo "canonical fingerprint $got does not match tests/canonical_fingerprint.txt ($want)"; exit 1; }
