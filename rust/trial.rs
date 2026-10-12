@@ -1,7 +1,8 @@
 // twinrun, reproducible randomized trials for agent-based models (Rust port).
 // std-only. Byte-identical output to the Python reference (trial.py).
 // Integer-only SplitMix64 with wrapping u64 arithmetic so there is no
-// language-dependent PRNG or float behavior.
+// language-dependent PRNG or float behavior. The master seed is a plain u64,
+// which has no precision loss at any value, unlike a JavaScript number.
 
 const GOLD: u64 = 0x9E3779B97F4A7C15;
 
@@ -37,8 +38,18 @@ impl Rng {
     }
 }
 
+// One SplitMix64 mixing round on its own, used to decorrelate a small integer (an agent id)
+// before it seeds a stream. Without this, neighbouring agent ids land only GOLD apart on the
+// SAME SplitMix64 orbit, so their draws are not independent, a real bug this fixes.
+fn scramble(x: u64) -> u64 {
+    let mut z = x.wrapping_add(GOLD);
+    z = (z ^ (z >> 30)).wrapping_mul(0xBF58476D1CE4E5B9);
+    z = (z ^ (z >> 27)).wrapping_mul(0x94D049BB133111EB);
+    z ^ (z >> 31)
+}
+
 fn stream(master: u64, agent_id: u64) -> Rng {
-    Rng::new(master ^ agent_id.wrapping_mul(GOLD))
+    Rng::new(master ^ scramble(agent_id))
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -121,17 +132,32 @@ fn mean(xs: &[usize]) -> f64 {
     xs.iter().sum::<usize>() as f64 / xs.len() as f64
 }
 
+// The fingerprint covers master and beta_ppm too, not just the final state, so two different
+// runs that happen to land on the same state (common at low beta) cannot collide.
+fn fingerprint(master: u64, beta_ppm: u64, state: &[u8]) -> String {
+    let mut header = Vec::with_capacity(12 + state.len());
+    header.extend_from_slice(&master.to_be_bytes());
+    header.extend_from_slice(&(beta_ppm as u32).to_be_bytes());
+    header.extend_from_slice(state);
+    format!("{:016x}", fnv1a(&header))
+}
+
 fn main() {
     let b0: u64 = 15000;
     let b1: u64 = 25000;
     let mut checks: Vec<(&str, bool)> = Vec::new();
 
-    let (_, s1) = sir(42, b0, true, false);
-    let fp = format!("{:016x}", fnv1a(&s1));
-    let (_, s1b) = sir(42, b0, true, false);
+    // Seed 523 carries a real secondary-infection chain (14 of 200 agents, not just the 3
+    // seeded cases), unlike most seeds at this beta, which mostly die out at 3 to 6. It also
+    // sits outside every other check's seed range (0-29, 0-9, 0-149, 100000-100149), so it
+    // cannot collide with them.
+    const CANON_SEED: u64 = 523;
+    let (_, s1) = sir(CANON_SEED, b0, true, false);
+    let fp = fingerprint(CANON_SEED, b0, &s1);
+    let (_, s1b) = sir(CANON_SEED, b0, true, false);
     checks.push((
         "replay reproduces the fingerprint",
-        format!("{:016x}", fnv1a(&s1b)) == fp && format!("{:016x}", fnv1a(&s1b)) == "96079823e10779ff",
+        fingerprint(CANON_SEED, b0, &s1b) == fp && fingerprint(CANON_SEED, b0, &s1b) == "53efcd55d473dd82",
     ));
 
     let arm_beta = |arm: &str| -> u64 {
@@ -214,8 +240,8 @@ fn main() {
     );
     println!();
     println!(
-        "CANONICAL FINGERPRINT (seed 42, beta 15000 ppm) = {}",
-        fp
+        "CANONICAL FINGERPRINT (seed {}, beta 15000 ppm) = {}",
+        CANON_SEED, fp
     );
 
     std::process::exit(if allgood { 0 } else { 1 });

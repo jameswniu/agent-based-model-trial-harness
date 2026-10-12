@@ -1,0 +1,65 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  identical-fingerprint:
+    name: identical fingerprint (${{ matrix.os }}, node ${{ matrix.node }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            node: "22"
+          - os: ubuntu-24.04
+            node: "24"
+          - os: ubuntu-24.04
+            node: "26"
+          - os: macos-15
+            node: "24"
+    steps:
+      # The actions are pinned to exact commits so the workflow itself never changes under us.
+      # The runner label names an OS release, not an immutable image, and the toolchains on it
+      # float on purpose. This job exists to catch a compiler or runtime update that changes
+      # the output, so every run prints the toolchain versions it used.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Record the toolchain versions used
+        run: |
+          uname -sm
+          python3 --version
+          node --version
+          rustc --version
+
+      - name: Python build
+        run: python3 python/trial.py | tee py.out
+
+      - name: TypeScript build, run natively by Node with no tsx
+        run: node typescript/trial.ts | tee ts.out
+
+      - name: Rust build
+        run: |
+          rustc -O rust/trial.rs -o trial_rs
+          ./trial_rs | tee rs.out
+
+      - name: The three builds must print byte-identical output
+        run: |
+          diff py.out ts.out
+          diff py.out rs.out
+          grep -q "= 96079823e10779ff" py.out
+          wc -c py.out ts.out rs.out

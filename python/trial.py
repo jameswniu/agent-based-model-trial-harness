@@ -5,6 +5,10 @@ Portable core so the Python, Rust, and TypeScript builds produce the identical f
 Everything is integer-only on a SplitMix64 generator, so there is no language-dependent float
 or PRNG behavior. Named per-agent streams keep common-random-number twins aligned even when a
 treatment reorders work. The SIR model is a test fixture written here, not imported.
+
+The master seed is a u64 (0 to 2**64-1). In Python that is just an int; the TypeScript build
+types it as bigint for the same reason, since a plain JavaScript number loses precision above
+2**53-1 and would silently corrupt a seed above that.
 """
 import sys
 
@@ -16,6 +20,16 @@ DAYS = 25
 K = 5
 RECOVER = 5
 SEEDS = 3
+
+
+def _scramble(x):
+    """One SplitMix64 mixing round, used on its own to decorrelate a small integer (an agent
+    id) before it seeds a stream. Without this, neighbouring agent ids land only GOLD apart on
+    the SAME SplitMix64 orbit, so their draws are not independent, a real bug this fixes."""
+    z = (x + GOLD) & MASK
+    z = ((z ^ (z >> 30)) * 0xBF58476D1CE4E5B9) & MASK
+    z = ((z ^ (z >> 27)) * 0x94D049BB133111EB) & MASK
+    return z ^ (z >> 31)
 
 
 class Rng:
@@ -38,7 +52,7 @@ class Rng:
 
 
 def stream(master, agent_id):
-    return Rng((master & MASK) ^ ((agent_id * GOLD) & MASK))
+    return Rng((master & MASK) ^ _scramble(agent_id))
 
 
 def sir(master, beta_ppm, named, perturb):
@@ -83,7 +97,10 @@ def fnv1a(data):
 
 
 def fingerprint(master, beta_ppm, state):
-    return f"{fnv1a(state):016x}"
+    # The fingerprint covers master and beta too, not just the final state, so two different
+    # runs that happen to land on the same state (common at low beta) cannot collide.
+    header = (master & MASK).to_bytes(8, "big") + (beta_ppm & 0xFFFFFFFF).to_bytes(4, "big")
+    return f"{fnv1a(header + state):016x}"
 
 
 def ite(a, b):
@@ -94,10 +111,15 @@ def main():
     b0, b1 = 15000, 25000
     checks = []
 
-    _, s1 = sir(42, b0, True, False)
-    fp = fingerprint(42, b0, s1)
-    _, s1b = sir(42, b0, True, False)
-    checks.append(("replay reproduces the fingerprint", fingerprint(42, b0, s1b) == fp and fingerprint(42, b0, s1b) == "96079823e10779ff"))
+    # Seed 523 carries a real secondary-infection chain (14 of 200 agents, not just the 3
+    # seeded cases), unlike most seeds at this beta, which mostly die out at 3 to 6. It also
+    # sits outside every other check's seed range (0-29, 0-9, 0-149, 100000-100149), so it
+    # cannot collide with them.
+    CANON_SEED = 523
+    _, s1 = sir(CANON_SEED, b0, True, False)
+    fp = fingerprint(CANON_SEED, b0, s1)
+    _, s1b = sir(CANON_SEED, b0, True, False)
+    checks.append(("replay reproduces the fingerprint", fingerprint(CANON_SEED, b0, s1b) == fp and fingerprint(CANON_SEED, b0, s1b) == "53efcd55d473dd82"))
 
     arm_beta = {"control": b0, "placebo": b0, "treatment": b1}
     placebo_matches_control = all(sir(s, arm_beta["placebo"], True, False)[1] == sir(s, arm_beta["control"], True, False)[1] for s in range(10))
@@ -141,7 +163,7 @@ def main():
     print(f"\n=== when the treatment reorders work ===")
     print(f"named streams stay coupled      {mean(named_p):.1f} agents differ (true effect)")
     print(f"global stream loses coupling    {mean(global_p):.1f} agents differ (spurious)")
-    print(f"\nCANONICAL FINGERPRINT (seed 42, beta 15000 ppm) = {fp}")
+    print(f"\nCANONICAL FINGERPRINT (seed {CANON_SEED}, beta 15000 ppm) = {fp}")
     return 0 if allgood else 1
 
 

@@ -20,7 +20,7 @@
   <line x1="378" y1="280" x2="612" y2="228" stroke="#6e7681" stroke-width="2.5" marker-end="url(#a)"/>
 
   <rect x="620" y="150" width="520" height="124" rx="12" fill="#0f1520" stroke="#f5b342" stroke-width="2.5"/>
-  <text x="880" y="214" font-size="43" font-weight="700" fill="#f5b342" text-anchor="middle" font-family="SFMono-Regular,Consolas,Menlo,monospace">96079823e10779ff</text>
+  <text x="880" y="214" font-size="43" font-weight="700" fill="#f5b342" text-anchor="middle" font-family="SFMono-Regular,Consolas,Menlo,monospace">53efcd55d473dd82</text>
   <text x="880" y="250" font-size="24" fill="#9aa7b4" text-anchor="middle">identical fingerprint</text>
 
   <text x="60" y="344" font-size="24" fill="#9aa7b4">Byte-identical output, verified by running all three.</text>

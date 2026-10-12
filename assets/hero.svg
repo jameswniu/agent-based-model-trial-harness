@@ -27,12 +27,12 @@
   <text x="820" y="346" font-size="28" fill="#3fb950">see exactly who flipped</text>
 
   <rect x="60" y="434" width="548" height="96" rx="12" fill="#0f1a12" stroke="#3fb950" stroke-width="2"/>
-  <text x="92" y="498" font-size="60" font-weight="800" fill="#3fb950">3.0</text>
+  <text x="92" y="498" font-size="60" font-weight="800" fill="#3fb950">2.8</text>
   <text x="214" y="480" font-size="26" fill="#e6edf3">agents truly flipped</text>
   <text x="214" y="512" font-size="24" fill="#9aa7b4">the real effect, from coupled twins</text>
 
   <rect x="628" y="434" width="512" height="96" rx="12" fill="#17130f" stroke="#6e7681" stroke-width="2"/>
-  <text x="660" y="498" font-size="60" font-weight="800" fill="#9aa7b4">5.8</text>
+  <text x="660" y="498" font-size="60" font-weight="800" fill="#9aa7b4">6.0</text>
   <text x="784" y="480" font-size="26" fill="#e6edf3">under independent runs</text>
   <text x="784" y="512" font-size="24" fill="#9aa7b4">about half of it is chance noise</text>
 </svg>

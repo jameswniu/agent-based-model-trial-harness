@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/hero.svg" alt="twinrun, reproducible randomized trials for agent-based models. Run a change against a perfectly matched twin on the same random seed and measure exactly which individuals it flipped. Coupled twins recover the real effect of 3.0 agents where independent runs report 5.8, about half of it chance noise." width="100%">
+  <img src="assets/hero.svg" alt="twinrun, reproducible randomized trials for agent-based models. Run a change against a perfectly matched twin on the same random seed and measure exactly which individuals it flipped. Coupled twins recover the real effect of 2.8 agents where independent runs report 6.0, about half of it chance noise." width="100%">
 </p>
 
 <p align="center">
@@ -35,11 +35,11 @@ People who build agent-based models, meaning simulations of many individuals who
 
 The one rule that makes this hold is named per-agent random streams. Each agent owns its stream, so a treatment that reorders work does not change who draws what. A single global stream silently loses that coupling the moment execution order changes.
 
-On a fresh SIR test model the coupled twins recover a per-individual effect of 3.0 agents where independent runs report 5.8, about half of which is chance.
+On a fresh SIR test model the coupled twins recover a per-individual effect of 2.8 agents where independent runs report 6.0, about half of which is chance.
 
 ## The same experiment in three languages
 
-<p align="center"><img src="assets/langs.svg" alt="Python, TypeScript, and Rust all produce the identical 16 hex digit fingerprint 96079823e10779ff, the byte-identical output of running the same portable algorithm in each language." width="100%"></p>
+<p align="center"><img src="assets/langs.svg" alt="Python, TypeScript, and Rust all produce the identical 16 hex digit fingerprint 53efcd55d473dd82, the byte-identical output of running the same portable algorithm in each language." width="100%"></p>
 
 Pick your stack. Each is one self-contained file with no dependencies.
 
@@ -49,15 +49,15 @@ npx tsx typescript/trial.ts
 rustc -O rust/trial.rs -o trial && ./trial
 ```
 
-All three print the same fingerprint, `96079823e10779ff`, and the same numbers. The shared generator is SplitMix64 with integer-only draws, so there is no language-dependent floating point or random behavior to break the match.
+All three print the same fingerprint, `53efcd55d473dd82`, and the same numbers. The shared generator is SplitMix64 with integer-only draws, so there is no language-dependent floating point or random behavior to break the match.
 
 ## See it run
 
-<p align="center"><img src="assets/demo.svg" alt="Terminal output of the run. Four correctness checks pass, deterministic replay, byte-identical placebo, named streams surviving an order change, and a global stream desyncing on one. The per-agent effect reads 3.0 under coupled twins and 5.8 under independent runs, and under a reordering treatment named streams hold at 3.0 while a global stream inflates to 5.9." width="100%"></p>
+<p align="center"><img src="assets/demo.svg" alt="Terminal output of the run. Four correctness checks pass, deterministic replay, byte-identical placebo, named streams surviving an order change, and a global stream desyncing on one. The per-agent effect reads 2.8 under coupled twins and 6.0 under independent runs, and under a reordering treatment named streams hold at 2.8 while a global stream inflates to 5.5." width="100%"></p>
 
 ## Why the effect comes out cleaner
 
-<p align="center"><img src="assets/effect.svg" alt="Bar chart of agents flipped by the treatment. With no reorder, coupled twins read 3.0 and independent runs read 5.8. When the treatment reorders work, named streams hold at 3.0 while a global stream inflates to 5.9. A dashed line marks the true effect at 3.0, so the taller bars are visibly noise and desync above it." width="100%"></p>
+<p align="center"><img src="assets/effect.svg" alt="Bar chart of agents flipped by the treatment. With no reorder, coupled twins read 2.8 and independent runs read 6.0. When the treatment reorders work, named streams hold at 2.8 while a global stream inflates to 5.5. A dashed line marks the true effect at 2.8, so the taller bars are visibly noise and desync above it." width="100%"></p>
 
 Independent runs cannot isolate the real effect, because almost every agent differs by chance. Coupled twins can, and only order-independent per-agent streams keep that coupling when a treatment changes execution order.
 
@@ -85,9 +85,9 @@ twinrun is not a modeling framework and does not replace the ones above. It is a
 Running any of the three builds reproduces these results. The SIR outbreak model in each file is only a test fixture, written in the file, not imported from anywhere.
 
 - Four invariants pass. Deterministic replay to a fingerprint, placebo byte-identical to control, named streams survive an order change, a single global stream desyncs on one.
-- The per-individual effect is 3.0 agents under coupled twins and 5.8 under independent runs, where roughly half of the independent figure is chance.
-- When the treatment reorders work, named streams hold at the true 3.0 while a global stream inflates to 5.9 spurious flips.
-- Python, TypeScript, and Rust all print the same fingerprint, `96079823e10779ff`, with byte-identical output.
+- The per-individual effect is 2.8 agents under coupled twins and 6.0 under independent runs, where roughly half of the independent figure is chance.
+- When the treatment reorders work, named streams hold at the true 2.8 while a global stream inflates to 5.5 spurious flips.
+- Python, TypeScript, and Rust all print the same fingerprint, `53efcd55d473dd82`, with byte-identical output.
 
 ## Status
 
