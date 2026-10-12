@@ -1,27 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 380" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
   <defs>
-    <marker id="a" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8 Z" fill="#6e7681"/></marker>
+    <marker id="a" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8 Z" fill="#7d786f"/></marker>
   </defs>
   <rect width="1200" height="380" fill="#0b0d10"/>
-  <text x="60" y="58" font-size="33" font-weight="700" fill="#e6edf3">One experiment, three languages, one result</text>
+  <text x="60" y="58" font-size="33" font-weight="700" fill="#f2efe9">One experiment, three languages, one result</text>
 
-  <rect x="70" y="118" width="300" height="52" rx="10" fill="#151a21" stroke="#2a323c" stroke-width="2"/>
+  <rect x="70" y="118" width="300" height="52" rx="10" fill="#111316" stroke="#262b31" stroke-width="2"/>
   <circle cx="100" cy="144" r="9" fill="#f5b342"/>
-  <text x="124" y="152" font-size="26" fill="#e6edf3">Python</text>
-  <rect x="70" y="186" width="300" height="52" rx="10" fill="#151a21" stroke="#2a323c" stroke-width="2"/>
-  <circle cx="100" cy="212" r="9" fill="#3fb950"/>
-  <text x="124" y="220" font-size="26" fill="#e6edf3">TypeScript</text>
-  <rect x="70" y="254" width="300" height="52" rx="10" fill="#151a21" stroke="#2a323c" stroke-width="2"/>
-  <circle cx="100" cy="280" r="9" fill="#6e7681"/>
-  <text x="124" y="288" font-size="26" fill="#e6edf3">Rust</text>
+  <text x="124" y="152" font-size="26" fill="#f2efe9">Python</text>
+  <rect x="70" y="186" width="300" height="52" rx="10" fill="#111316" stroke="#262b31" stroke-width="2"/>
+  <circle cx="100" cy="212" r="9" fill="#7fa3b8"/>
+  <text x="124" y="220" font-size="26" fill="#f2efe9">TypeScript</text>
+  <rect x="70" y="254" width="300" height="52" rx="10" fill="#111316" stroke="#262b31" stroke-width="2"/>
+  <circle cx="100" cy="280" r="9" fill="#7d786f"/>
+  <text x="124" y="288" font-size="26" fill="#f2efe9">Rust</text>
 
-  <line x1="378" y1="144" x2="612" y2="196" stroke="#6e7681" stroke-width="2.5" marker-end="url(#a)"/>
-  <line x1="378" y1="212" x2="612" y2="212" stroke="#6e7681" stroke-width="2.5" marker-end="url(#a)"/>
-  <line x1="378" y1="280" x2="612" y2="228" stroke="#6e7681" stroke-width="2.5" marker-end="url(#a)"/>
+  <line x1="378" y1="144" x2="612" y2="196" stroke="#7d786f" stroke-width="2.5" marker-end="url(#a)"/>
+  <line x1="378" y1="212" x2="612" y2="212" stroke="#7d786f" stroke-width="2.5" marker-end="url(#a)"/>
+  <line x1="378" y1="280" x2="612" y2="228" stroke="#7d786f" stroke-width="2.5" marker-end="url(#a)"/>
 
-  <rect x="620" y="150" width="520" height="124" rx="12" fill="#0f1520" stroke="#f5b342" stroke-width="2.5"/>
+  <rect x="620" y="150" width="520" height="124" rx="12" fill="#111316" stroke="#f5b342" stroke-width="2.5"/>
   <text x="880" y="214" font-size="43" font-weight="700" fill="#f5b342" text-anchor="middle" font-family="SFMono-Regular,Consolas,Menlo,monospace">53efcd55d473dd82</text>
-  <text x="880" y="250" font-size="24" fill="#9aa7b4" text-anchor="middle">identical fingerprint</text>
+  <text x="880" y="250" font-size="24" fill="#a8a39a" text-anchor="middle">identical fingerprint</text>
 
-  <text x="60" y="344" font-size="24" fill="#9aa7b4">Byte-identical output, verified by running all three.</text>
+  <text x="60" y="344" font-size="24" fill="#a8a39a">Byte-identical output, verified by running all three.</text>
 </svg>

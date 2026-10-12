@@ -4,8 +4,8 @@
 
 <p align="center">
   <img alt="languages Python, TypeScript, Rust" src="https://img.shields.io/badge/Python%2C%20TypeScript%2C%20Rust-f5b342?style=flat-square&labelColor=0b0d10">
-  <img alt="zero dependencies" src="https://img.shields.io/badge/dependencies-zero-3fb950?style=flat-square&labelColor=0b0d10">
-  <img alt="license MIT" src="https://img.shields.io/badge/license-MIT-9aa7b4?style=flat-square&labelColor=0b0d10">
+  <img alt="zero dependencies" src="https://img.shields.io/badge/dependencies-zero-7fa3b8?style=flat-square&labelColor=0b0d10">
+  <img alt="license MIT" src="https://img.shields.io/badge/license-MIT-a8a39a?style=flat-square&labelColor=0b0d10">
 </p>
 
 **twinrun answers one question about a computer simulation. Did my change actually cause this result, or was it just luck?**
