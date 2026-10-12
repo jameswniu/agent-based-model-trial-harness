@@ -8,7 +8,32 @@
   <img alt="license MIT" src="https://img.shields.io/badge/license-MIT-9aa7b4?style=flat-square&labelColor=0b0d10">
 </p>
 
-**Run a change to a simulation against a perfectly matched twin run, measure exactly which individuals the change affected, and prove the result replays to the same fingerprint.** One small file per language, zero dependencies, not tied to any one model. The Python, TypeScript, and Rust builds run the same portable algorithm and print the identical fingerprint, so the whole experiment reproduces across languages, not just within one.
+**twinrun answers one question about a computer simulation. Did my change actually cause this result, or was it just luck?**
+
+## What it is, in plain words
+
+Researchers build pretend worlds in code to test an idea, for example whether couples divorce more when they hold their grudges longer. These worlds run on dice rolls, so each run comes out a little different. Add the grudge rule and you see more divorces, but you cannot tell whether the rule caused it or the dice simply landed differently that time.
+
+twinrun takes the luck out of the comparison. It runs the world twice with the dice landing exactly the same in both runs, and changes only the one rule you are testing in the second run. Same dice, one change, so any difference between the two runs is the rule and not chance. It even shows which individuals the change flipped, not just the totals, and it stamps every run with a short fingerprint so anyone can rerun it and land on the identical result.
+
+## The problem it solves
+
+Simulation results are hard to trust and hard to reproduce, because randomness hides inside every run. When a real change and a lucky roll can produce the same outcome, you cannot cleanly say the change caused the effect, and a reviewer who reruns your model may not get your numbers back. twinrun fixes both at once. It holds the randomness fixed across the two runs, so the effect you measure is the change and nothing else, and it fingerprints each run so the result reproduces exactly.
+
+## Who it is for
+
+People who build agent-based models, meaning simulations of many individuals who each follow rules, to study what happens to the whole. That includes epidemiologists modeling how a disease spreads, economists and demographers modeling households and markets, ecologists modeling populations, and engineers building multi-agent AI systems. If your work depends on saying "this change caused this effect" in a simulation, and on that result holding up when someone else reruns it, this is for you.
+
+## How it works, for the technical reader
+
+**Run a change to a simulation against a perfectly matched twin run, measure exactly which individuals the change affected, and prove the result replays to the same fingerprint.** One small file per language, zero dependencies, not tied to any one model.
+
+- **Twin arms on common random numbers.** It runs the model twice from the same randomness, once with your change and once without, so any difference is the change and not luck.
+- **A per-individual effect.** Because the twins share their randomness, you can count exactly which agents the change flipped. Independent runs cannot, since almost every agent differs by chance.
+- **A placebo arm.** A no-op intervention must come out byte-identical to control. If it moves, something leaked, and the tool catches it.
+- **Verified replay.** Every run carries a 64-bit fingerprint (FNV-1a) of the full state, so a reviewer reruns it and lands on the identical result.
+
+The one rule that makes this hold is named per-agent random streams. Each agent owns its stream, so a treatment that reorders work does not change who draws what. A single global stream silently loses that coupling the moment execution order changes.
 
 On a fresh SIR test model the coupled twins recover a per-individual effect of 3.0 agents where independent runs report 5.8, about half of which is chance.
 
@@ -25,19 +50,6 @@ rustc -O rust/trial.rs -o trial && ./trial
 ```
 
 All three print the same fingerprint, `96079823e10779ff`, and the same numbers. The shared generator is SplitMix64 with integer-only draws, so there is no language-dependent floating point or random behavior to break the match.
-
-## Who it is for
-
-People who build agent-based models, meaning programs that simulate many individual agents following rules to study what emerges in the whole. That includes epidemiologists modeling outbreaks, economists and demographers modeling households and markets, ecologists modeling populations, and engineers building multi-agent systems. If you run a model to ask whether an intervention changes an outcome, and you need that answer to be credible and reproducible, this is for you.
-
-## What it does
-
-- **Twin arms on common random numbers.** It runs the model twice from the same randomness, once with your change and once without, so any difference is the change and not luck.
-- **A per-individual effect.** Because the twins share their randomness, you can count exactly which agents the change flipped. Independent runs cannot, since almost every agent differs by chance.
-- **A placebo arm.** A no-op intervention must come out byte-identical to control. If it moves, something leaked, and the tool catches it.
-- **Verified replay.** Every run carries a 64-bit fingerprint (FNV-1a) of the full state, so a reviewer reruns it and lands on the identical result.
-
-The one rule that makes this hold is named per-agent random streams. Each agent owns its stream, so a treatment that reorders work does not change who draws what. A single global stream silently loses that coupling the moment execution order changes.
 
 ## See it run
 
