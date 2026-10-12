@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <defs>
+    <marker id="arw" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L9,4 L0,8 Z" fill="#6e7681"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="560" fill="#0b0d10"/>
+  <rect x="6" y="6" width="1188" height="548" rx="16" fill="none" stroke="#1b222b" stroke-width="2"/>
+
+  <text x="60" y="112" font-size="78" font-weight="800" fill="#f5b342">twinrun</text>
+  <text x="64" y="162" font-size="29" fill="#9aa7b4">Reproducible randomized trials for agent-based models</text>
+
+  <rect x="60" y="282" width="214" height="72" rx="36" fill="none" stroke="#f5b342" stroke-width="2.5"/>
+  <text x="167" y="326" font-size="27" fill="#f5b342" text-anchor="middle">same seed</text>
+
+  <line x1="274" y1="300" x2="356" y2="268" stroke="#6e7681" stroke-width="2.5" marker-end="url(#arw)"/>
+  <line x1="274" y1="336" x2="356" y2="368" stroke="#6e7681" stroke-width="2.5" marker-end="url(#arw)"/>
+  <rect x="362" y="232" width="356" height="72" rx="12" fill="#151a21" stroke="#2a323c" stroke-width="2"/>
+  <text x="386" y="276" font-size="28" fill="#e6edf3">Control run</text>
+  <rect x="362" y="332" width="356" height="72" rx="12" fill="#151a21" stroke="#2a323c" stroke-width="2"/>
+  <text x="386" y="376" font-size="27" fill="#e6edf3">Treatment run, your change</text>
+
+  <line x1="718" y1="268" x2="792" y2="300" stroke="#6e7681" stroke-width="2.5" marker-end="url(#arw)"/>
+  <line x1="718" y1="368" x2="792" y2="336" stroke="#6e7681" stroke-width="2.5" marker-end="url(#arw)"/>
+  <rect x="798" y="262" width="342" height="112" rx="12" fill="#0f1520" stroke="#3fb950" stroke-width="2.5"/>
+  <text x="820" y="308" font-size="28" fill="#e6edf3">Compare the twins,</text>
+  <text x="820" y="346" font-size="28" fill="#3fb950">see exactly who flipped</text>
+
+  <rect x="60" y="434" width="548" height="96" rx="12" fill="#0f1a12" stroke="#3fb950" stroke-width="2"/>
+  <text x="92" y="498" font-size="60" font-weight="800" fill="#3fb950">3.0</text>
+  <text x="214" y="480" font-size="26" fill="#e6edf3">agents truly flipped</text>
+  <text x="214" y="512" font-size="24" fill="#9aa7b4">the real effect, from coupled twins</text>
+
+  <rect x="628" y="434" width="512" height="96" rx="12" fill="#17130f" stroke="#6e7681" stroke-width="2"/>
+  <text x="660" y="498" font-size="60" font-weight="800" fill="#9aa7b4">6.1</text>
+  <text x="784" y="480" font-size="26" fill="#e6edf3">under independent runs</text>
+  <text x="784" y="512" font-size="24" fill="#9aa7b4">about half of it is chance noise</text>
+</svg>
